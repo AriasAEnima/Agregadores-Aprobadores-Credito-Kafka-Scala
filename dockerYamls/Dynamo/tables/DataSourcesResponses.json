@@ -1,0 +1,15 @@
+{
+  "TableName": "DataSourcesResponses",
+  "KeySchema": [
+    { "AttributeName": "rqUID", "KeyType": "HASH" },
+    { "AttributeName": "dataSource-customerId", "KeyType": "RANGE" }
+  ],
+  "AttributeDefinitions": [
+    { "AttributeName": "rqUID", "AttributeType": "S" },
+    { "AttributeName": "dataSource-customerId", "AttributeType": "S" }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

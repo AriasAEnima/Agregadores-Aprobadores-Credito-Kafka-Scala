@@ -41,4 +41,5 @@ bin/
 .scala_dependencies
 .cache-main
 
-#general
+#dynamo backup
+dockerYamls/Dynamo/docker/dynamodb/

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package eci.edu.co.protos;
+import "ClientMessage.proto";
+
+
+message ReadyDataSourcesMessage {
+  string uuid = 1;
+  repeated  ClientMessage clients= 2;
+  double timeOfProcess = 3;
+}

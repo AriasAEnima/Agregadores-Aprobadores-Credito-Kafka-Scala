@@ -1,0 +1,15 @@
+{
+  "TableName": "ResultTable",
+  "KeySchema": [
+    { "AttributeName": "rqUID", "KeyType": "HASH" },
+    { "AttributeName": "Approved", "KeyType": "RANGE" }
+  ],
+  "AttributeDefinitions": [
+    { "AttributeName": "rqUID", "AttributeType": "S" },
+    { "AttributeName": "Approved", "AttributeType": "S" }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

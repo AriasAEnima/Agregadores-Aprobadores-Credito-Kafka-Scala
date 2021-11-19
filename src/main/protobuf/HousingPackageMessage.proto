@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package eci.edu.co.protos;
+import "ClientMessage.proto";
+
+
+message HousingPackageMessage {
+  string uuid = 1;
+  double timeOfProcess = 2;
+  int32 totalAmount = 3;
+  int32 totalRotative = 4;
+  int32 maximumPayment = 5;
+  int32 extScore = 6;
+  int32 intScore = 7;
+  int32 activeDebs = 8;
+  bool penalty = 9;
+  int32 age = 10;
+  bool previousAttemps = 11;
+}

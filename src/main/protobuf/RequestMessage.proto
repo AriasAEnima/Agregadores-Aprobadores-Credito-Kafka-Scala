@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package eci.edu.co.protos;
+
+import "ClientMessage.proto";
+
+message RequestMessage {
+  string uuid = 1;
+  string creditType = 2;
+  int32 amount  = 3;
+  repeated  ClientMessage clients= 4;
+
+}
