@@ -45,12 +45,12 @@ case class DynamoService() {
     table.putItem(item)
   }
 
-  def putItem( tableName : String , rquid: String, creditType: String, approved: Boolean, reasons : String): Unit ={
+  def putItem( tableName : String , rquid: String, creditType: String, approved: Boolean, reasons : List[String]): Unit ={
     val table = client.getTable(tableName)
     val item = new Item().withPrimaryKey("rqUID",rquid)
       .withString("creditType", creditType)
       .withString( "Approved", approved.toString)
-      .withString( "reasons", reasons)
+      .withString( "reasons", reasons.mkString("[", ",", "]"))
     LOGGER.info(s"Item ${item.toJSONPretty}")
     table.putItem(item)
   }

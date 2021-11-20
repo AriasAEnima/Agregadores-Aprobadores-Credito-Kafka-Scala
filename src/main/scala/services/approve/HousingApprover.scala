@@ -4,6 +4,8 @@ import services.DynamoService
 import protos.HousingPackageMessage.HousingPackageMessage
 import entities.CreditRequest.CreditHousing
 
+import com.typesafe.scalalogging.Logger
+
 case class HousingApprover(){
   val dynamoService = DynamoService()
 
@@ -11,31 +13,31 @@ case class HousingApprover(){
     val result = approve(hm)
     dynamoService.putItem("ResultTable",hm.uuid,CreditHousing,result._1,result._2)
   }
+  val LOGGER = Logger("AAAAAAAAAA")
 
 
-  private def approve(hm : HousingPackageMessage): (Boolean,String) ={
-    HousingApprover.allConditions.foldLeft(true,""){
-      (X,F)=> {
-        val result= F(hm)
-        result match {
-          case (true, "") =>  (X._1 && result._1, X._2)
-          case _ =>  (X._1 && result._1, X._2+","+result._2)
-        }
+  private def approve(hm : HousingPackageMessage): (Boolean, List[String]) ={
+    val allresults = HousingApprover.allConditions.flatMap( f => {
+      val result = f(hm)
+      result match {
+        case "" => None
+        case x => Some(x)
       }
-    }
+    })
+    if (allresults.length == 0) (true, List()) else (false, allresults)
   }
 
 }
 
 object HousingApprover {
-  val A = (hm: HousingPackageMessage) => if (hm.totalAmount > 12000000)  (true,"") else (false, "totalAmount Low")
-  val B = (hm: HousingPackageMessage) => if (hm.totalRotative > 800000)  (true,"") else (false, "totalRotative Low")
-  val C = (hm: HousingPackageMessage) => if (hm.maximumPayment > 1300000)  (true,"") else (false, "maximumPayment Low")
-  val D = (hm: HousingPackageMessage) => if (hm.extScore >= 2)  (true,"") else (false, "extScore Low")
-  val E = (hm: HousingPackageMessage) => if (hm.intScore >=2 )  (true,"") else (false, "intScore Low")
-  val F = (hm: HousingPackageMessage) => if (hm.activeDebs <=2 )  (true,"") else (false, "activeDebs High")
-  val G = (hm: HousingPackageMessage) => if (!hm.penalty )  (true,"") else (false, "has penalty")
-  val H = (hm: HousingPackageMessage) => if (hm.age < 70)  (true,"") else (false, "Age")
+  val A = (hm: HousingPackageMessage) => if (hm.totalAmount > 12000000)  ("") else ( "totalAmount Low")
+  val B = (hm: HousingPackageMessage) => if (hm.totalRotative > 800000)  ("") else ( "totalRotative Low")
+  val C = (hm: HousingPackageMessage) => if (hm.maximumPayment > 1300000)  ("") else ( "maximumPayment Low")
+  val D = (hm: HousingPackageMessage) => if (hm.extScore >= 2)  ("") else ( "extScore Low")
+  val E = (hm: HousingPackageMessage) => if (hm.intScore >=2 )  ("") else ( "intScore Low")
+  val F = (hm: HousingPackageMessage) => if (hm.activeDebs <=2 )  ("") else ( "activeDebs High")
+  val G = (hm: HousingPackageMessage) => if (!hm.penalty )  ("") else ( "has penalty")
+  val H = (hm: HousingPackageMessage) => if (hm.age < 70)  ("") else ( "Age")
 
   val allConditions = List(A,B,C,D,E,F,G,H)
 
